@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+<title>System</title>
+
+<style>
+
+:root {
+	--backgroundColor: black;
+	--navColor: #222;
+}
+
+* {
+	box-sizing: border-box;
+	user-select: none;
+}
+
+::-webkit-scrollbar-track {
+	background-color: transparent;
+}
+
+::-webkit-scrollbar {
+	width: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #333;
+}
+
+
+body {
+	background-color: var(--backgroundColor);
+	font-family: monospace;
+}
+
+main {
+	visibility: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center; 
+}
+
+main:first-of-type {
+	visibility: visible;
+}
+
+.box {
+	width: 600px;
+	height: 200px;
+	background-color: #111;
+	border: 1px solid #999;
+	margin: 0px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	color: #999;
+}
+
+.success {
+	border-color: #0F0;
+	color: #0F0;
+}
+
+.error {
+	border-color: #F00;
+	color: #F00;
+}
+
+.box-wide {
+	width: 90%;
+	height: 90%;
+}
+
+.box > * {
+	width: 80%;
+	margin: 10px 0;
+}
+
+.box > h1 {
+	margin: 0;
+	padding: 0;
+	font-size: 3.6rem;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.box > label {
+	font-size: 2rem;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.box > input {
+	height: 50px;
+	background-color: #333;
+	padding: 0 20px;
+	border: none;
+	outline: none;
+	font-size: 2rem;
+	font-weight: bold;
+	color: inherit;
+	pointer-events: none;
+}
+
+.box > .progress {
+	height: 50px;
+	background-color: #333;
+}
+
+.box > .progress > div {
+	height: 100%;
+	background-color: #999;
+}
+
+.box > .text {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 40px 10%;
+	overflow-y: auto;
+}
+
+.box > .text h1 {
+	margin: 40px 0;
+	padding: 0;
+	font-size: 2.8rem;
+	font-weight: bold;
+}
+
+.box > .text h2 {
+	margin: 30px 0;
+	padding: 0;
+	font-size: 2.2rem;
+	font-weight: bold;
+}
+
+.box > .text h3 {
+	margin: 20px 0;
+	padding: 0;
+	font-size: 1.6rem;
+	font-weight: bold;
+}
+
+.box > .text p {
+	margin: 20px 0;
+	padding: 0;
+	font-size: 1rem;
+	font-weight: normal;
+}
+
+</style>
+
+<script>
+
+const keydownHandler = e => {
+	if(document.getElementById('password').style.visibility === '' || document.getElementById('password').style.visibility === 'visible') {
+		if(e.key.match(/^[a-zA-Z0-9]$/) !== null) {
+			document.getElementById('password-field').value = document.getElementById('password-field').value + e.key;
+		} else if(e.key === 'Backspace') {
+			document.getElementById('password-field').value = document.getElementById('password-field').value.substring(0, document.getElementById('password-field').value.length - 1);
+		} else if(e.key === 'Enter') {
+			login(document.getElementById('password-field').value);
+		}
+	}
+};
+
+const login = password => {
+	document.getElementById('password').style.visibility = 'hidden';
+	if(password === 'lukas') {
+		loginSuccess();
+	} else {
+		loginError();
+	}
+};
+
+const loginSuccess = () => {
+	setTimeout(() => {
+		document.getElementById('granted').style.visibility = 'visible';
+	}, 200);
+	setTimeout(() => {
+		document.getElementById('granted').style.visibility = 'hidden';
+		decrypt();
+	}, 2200);
+};
+
+const loginError = () => {
+	setTimeout(() => {
+		document.getElementById('denied').style.visibility = 'visible';
+	}, 200);
+	setTimeout(() => {
+		document.getElementById('denied').style.visibility = 'hidden';
+	}, 2200);
+	setTimeout(() => {
+		document.getElementById('password-field').value = '';
+		document.getElementById('password').style.visibility = 'visible';
+	}, 2400);
+};
+
+const decrypt = () => {
+	setTimeout(() => {
+		document.getElementById('decrypt').style.visibility = 'visible';
+	}, 200);
+	const oldNow = Date.now();
+	const speed = 100;
+	const i = setInterval(() => {
+		const e = document.getElementById('decrypt-field').children[0];
+		const now = Date.now();
+		if((now - oldNow) / speed >= 100) {
+			clearInterval(i);
+			document.getElementById('decrypt').style.visibility = 'hidden';
+			setTimeout(() => {
+				open();
+			}, 200);
+			return;
+		}
+		e.style.width = '' + ((now - oldNow) / speed) + '%';
+	}, speed / 3);
+};
+
+const open = () => {
+	setTimeout(() => {
+		document.getElementById('show').style.visibility = 'visible';
+	}, 200);
+	const oldNow = Date.now();
+	const speed = 100;
+	/*const i = setInterval(() => {
+		const e = document.getElementById('decrypt-field').children[0];
+		const now = Date.now();
+		if((now - oldNow) / speed >= 100) {
+			clearInterval(i);
+			document.getElementById('show').style.visibility = 'hidden';
+			setTimeout(() => {
+				open();
+			}, 200);
+			return;
+		}
+		e.style.width = '' + ((now - oldNow) / speed) + '%';
+	}, speed / 3);*/
+};
+
+</script>
+
+</head>
+<body onkeydown="keydownHandler(event)">
+
+<main id="password">
+	<div class="box">
+		<label for="password-field">Password:</label>
+		<input id="password-field" type="password" />
+	</div>
+</main>
+
+<main id="denied">
+	<div class="box error">
+		<h1>Access Denied</h1>
+	</div>
+</main>
+
+<main id="granted">
+	<div class="box success">
+		<h1>Access Granted</h1>
+	</div>
+</main>
+
+<main id="decrypt">
+	<div class="box">
+		<label>Decrypting:</label>
+		<div id="decrypt-field" class="progress"><div></div></div>
+	</div>
+</main>
+
+<main id="show">
+	<div class="box">
+	</div>
+</main>
+
+<main id="showbig">
+	<div class="box box-wide">
+		<div class="text">
+			<h1>Caption</h1>
+			<h2>Caption</h2>
+			<h3>Caption</h3>
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+			<p>Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text</p> 
+		</div>
+	</div>
+</main>
+
+</body>
+</html>
